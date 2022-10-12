@@ -130,7 +130,13 @@
     <ClCompile Include="btree.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="C:\Users\eunha\OneDrive - 연세대학교 (Yonsei University)\2022_02\알고리즘 기초\B_tree_proj_2022__guide.c" />
+    <ClCompile Include="C:\Users\eunha\OneDrive - 연세대학교 (Yonsei University)\2022_02\알고리즘 기초\B_tree_proj_2022__guide.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="new.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="test.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
