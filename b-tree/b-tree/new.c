@@ -199,9 +199,15 @@ int insert_arec(ele in_rec) {	//하나의 레코드를 삽입  key = 회사명
 	your
 	code
 	*/
-
+	child = NULL;
 
 	int index = 0;
+	nodeptr tp;
+	tp = retrieve(in_rec.name, &in_rec.nleng);
+	if (tp) {
+		return 0;
+	}
+	
 	while (curr->ptr[0] != NULL || curr->ptr[1] != NULL) {
 
 
@@ -234,6 +240,7 @@ int insert_arec(ele in_rec) {	//하나의 레코드를 삽입  key = 회사명
 			return 0;
 		}
 	}
+	
 	do {
 
 		// curr node is not full
@@ -254,26 +261,25 @@ int insert_arec(ele in_rec) {	//하나의 레코드를 삽입  key = 회사명
 		}
 		else {
 			// curr node is full
+
 			for (i = 0; i < MAXK; i++) {
 				if (strcmp(in_rec.name, curr->rec[i].name/* Fill your code */) < 0)
 					break;
 			}
-			if (i == 0) {
-				bnode.ptr[0]=
-			}
-			bnode.ptr[0] = /* Fill your code */;
+			
+			bnode.ptr[0] =curr->ptr[0] /* Fill your code */;
 			for (j = 0; j < i; j++) {
 				bnode.rec[j] = curr->rec[j]/* Fill your code */;
 				bnode.ptr[j + 1] = curr->ptr[j+1]/* Fill your code */;
 			}
-
+			
 			bnode.rec[j] =in_rec /* Fill your code */;
-			bnode.ptr[j + 1] = /* Fill your code */;
+			bnode.ptr[j + 1] = child/* Fill your code */;
 			j++;
 
 			while (i < MAXK) {
-				bnode.rec[j] = /* Fill your code */;
-				bnode.ptr[j + 1] = /* Fill your code */;
+				bnode.rec[j] = curr->rec[i]/* Fill your code */;
+				bnode.ptr[j + 1] = curr->ptr[i+1]/* Fill your code */;
 
 				j++;
 				i++;
@@ -286,17 +292,34 @@ int insert_arec(ele in_rec) {	//하나의 레코드를 삽입  key = 회사명
 			your
 			code
 			*/
+			
+			curr->rec[0] = bnode.rec[0];
+			curr->ptr[0] = bnode.ptr[0];
+			curr->ptr[1] = bnode.ptr[1];
+			curr->rec[1] = empty;
+			curr->fill_cnt = 1;
+
+			in_rec = bnode.rec[1];
+
+			new_ptr = (nodeptr)malloc(sizeof(node));
+			child = (nodeptr)malloc(sizeof(node));
+			new_ptr->rec[0] = bnode.rec[2];
+			new_ptr->ptr[1] = bnode.ptr[3];
+			new_ptr->ptr[0] = bnode.ptr[2];
+			new_ptr->fill_cnt = 1;
+
+			child = new_ptr;
 
 			if (top >= 0) {		// 스택이 emtpy 가 아닐 경우 
 				curr = pop();	// curr 의 부모로 curr를 변경함.
 			}
 			else { // 스택이 empty 임 (즉 curr 는 root 노드임.) 새 root 노드를 만들어 curr 의 부모로 함.  
-				tptr = /* Fill your code */;
-				tptr->rec[0] = /* Fill your code */;
-				tptr->ptr[0] = /* Fill your code */;
-				tptr->ptr[1] = /* Fill your code */;
-				tptr->fill_cnt = /* Fill your code */;
-				root = /* Fill your code */;
+				tptr = (nodeptr)malloc(sizeof(node));/* Fill your code */;
+				tptr->rec[0] = in_rec/* Fill your code */;
+				tptr->ptr[0] = curr/* Fill your code */;
+				tptr->ptr[1] = new_ptr/* Fill your code */;
+				tptr->fill_cnt = child->fill_cnt/* Fill your code */;
+				root = tptr/* Fill your code */;
 				total_height++;
 				return 2; // 삽입 성공 (종류 2: 새 루트가 생김)
 			} // else.
@@ -305,3 +328,118 @@ int insert_arec(ele in_rec) {	//하나의 레코드를 삽입  key = 회사명
 
 	return 0; // 이 문장을 수행할 경우는 없다.
 } //함수 insert_arec
+
+void insert_btree() {   //파일전체의 레코드를 삽입 ->insert_arec 을 호출 
+	FILE* fp;
+	ele data;
+	char name_i[20], line[200];
+	char* ret_fgets;
+	int num, r;
+	double score;
+	int n = 0, lineleng;
+	int check, count = 0;
+	fp = fopen("Com_names1.txt", "r");
+	if (fp == NULL) {
+		printf("Cannot open this file :  Com_names1.txt\n");
+		scanf("%d", &check);
+	} //if 
+
+	root = NULL;
+	while (1) {
+
+		ret_fgets = fgets(line, 200, fp);
+		if (!ret_fgets)
+			break;  // 파일 모두 읽음.
+
+		lineleng = strlen(line);  // line 의 마지막 글자는 newline 글자임.
+		if (lineleng - 1 >= 100)
+			continue; // 회사명이 너무 길어서 무시
+		line[lineleng -1] = '\0'; //  마지막 newline 글자 제거.
+
+		strcpy(data.name, line);  // 삽입할 레코드 준비.
+		data.nleng = strlen(line);
+
+		top = -1;  // 스택의 빈상태로 초기화.
+		r = insert_arec(data);   // 한 레코드를 비트리에 삽입한다.
+		if (r != 0)
+			count++; // 삽입성공 카운트 증가.
+	} //while 
+
+	fp = fopen("Com_names2.txt", "r");
+	if (fp == NULL) {
+		printf("Cannot open this file :  Com_names2.txt\n");
+		scanf("%d", &check);
+	} //if 
+
+	while (1) {
+		ret_fgets = fgets(line, 200, fp);
+		if (!ret_fgets)
+			break;  // 파일 모두 읽음.
+
+		lineleng = strlen(line);  // line 의 마지막 글자는 newline 글자임.
+		if (lineleng - 1 >= 100)
+			continue; // 회사명이 너무 길어서 무시
+		line[lineleng - 1] = '\0'; //  마지막 newline 글자 제거.
+
+		strcpy(data.name, line);  // 삽입할 레코드 준비.
+		data.nleng = strlen(line);
+
+		top = -1;  // 스택의 빈상태로 초기화.
+		r = insert_arec(data);   // 한 레코드를 비트리에 삽입한다.
+		if (r != 0)
+			count++; // 삽입성공 카운트 증가.
+
+	} //while 
+
+
+	printf("삽입 성공한 레코드 수 = %d \n\n", count);
+	fclose(fp);
+}   //  함수 insert_btree
+
+nodeptr  retrieve(char* skey, int* idx_found) {   //검색 함수 
+	nodeptr curr = root;
+	nodeptr P;
+	int i;
+	do {
+		for (i = 0; i < curr->fill_cnt; i++) {
+			if (strcmp(skey, curr->rec[i].name) < 0)
+				break;
+			else if (strcmp(skey, curr->rec[i].name) == 0) {
+				*idx_found = i;
+				return curr;
+			}
+			else
+				; // do next i.
+		} // for i= 
+		P = curr->ptr[i];
+		if (P) {
+			curr = P;
+		}
+	} while (P);
+
+	return NULL;
+
+}//retrieve
+
+int seq_scan_btree(nodeptr curr) {
+	int check_stack = 0;
+	int i;
+	int n;
+	if (curr)
+	{
+		n = curr->fill_cnt;
+		for (i = 0; i < n; i++) {
+
+			seq_scan_btree(curr->ptr[i]);
+			printf("Name : %s\n", curr->rec[i].name);
+
+		}
+		seq_scan_btree(curr->ptr[i]);
+	} //if(curr)
+	else if (!curr)
+	{
+		return 0;
+	}
+
+	return 0;
+} //seq_scan_btree
