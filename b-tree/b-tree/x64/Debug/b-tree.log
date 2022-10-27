@@ -1,20 +1,26 @@
-﻿  new.c
-D:\Algorithm\b-tree\b-tree\new.c(72,14): warning C4013: 'gets'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
-D:\Algorithm\b-tree\b-tree\new.c(72,24): warning C4047: '=': 'char *'의 간접 참조 수준이 'int'과(와) 다릅니다.
-D:\Algorithm\b-tree\b-tree\new.c(76,11): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\Algorithm\b-tree\b-tree\new.c(99,21): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\Algorithm\b-tree\b-tree\new.c(104,32): warning C4474: 'printf' : 서식 문자열에 전달된 인수가 너무 많습니다.
-D:\Algorithm\b-tree\b-tree\new.c(104,32): message : 자리 표시자 및 해당 매개 변수에는 variadic 인수가 0개 필요하지만 1개가 제공되었습니다.
-D:\Algorithm\b-tree\b-tree\new.c(106,32): warning C4474: 'printf' : 서식 문자열에 전달된 인수가 너무 많습니다.
-D:\Algorithm\b-tree\b-tree\new.c(106,32): message : 자리 표시자 및 해당 매개 변수에는 variadic 인수가 0개 필요하지만 1개가 제공되었습니다.
-D:\Algorithm\b-tree\b-tree\new.c(58,7): warning C4101: 'input' :참조되지 않은 지역 변수입니다.
-D:\Algorithm\b-tree\b-tree\new.c(62,15): warning C4101: 'find' :참조되지 않은 지역 변수입니다.
-D:\Algorithm\b-tree\b-tree\new.c(61,6): warning C4101: 'num' :참조되지 않은 지역 변수입니다.
-D:\Algorithm\b-tree\b-tree\new.c(354,14): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\Algorithm\b-tree\b-tree\new.c(360,16): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\Algorithm\b-tree\b-tree\new.c(379,14): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\Algorithm\b-tree\b-tree\new.c(385,16): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\Algorithm\b-tree\b-tree\new.c(338,9): warning C4101: 'score' :참조되지 않은 지역 변수입니다.
-D:\Algorithm\b-tree\b-tree\new.c(335,7): warning C4101: 'name_i' :참조되지 않은 지역 변수입니다.
-D:\Algorithm\b-tree\b-tree\new.c(337,6): warning C4101: 'num' :참조되지 않은 지역 변수입니다.
+﻿  test.c
+D:\Algorithm\b-tree\b-tree\test.c(73,14): warning C4013: 'gets'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+D:\Algorithm\b-tree\b-tree\test.c(73,24): warning C4047: '=': 'char *'의 간접 참조 수준이 'int'과(와) 다릅니다.
+D:\Algorithm\b-tree\b-tree\test.c(77,11): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Algorithm\b-tree\b-tree\test.c(100,21): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Algorithm\b-tree\b-tree\test.c(105,32): warning C4474: 'printf' : 서식 문자열에 전달된 인수가 너무 많습니다.
+D:\Algorithm\b-tree\b-tree\test.c(105,32): message : 자리 표시자 및 해당 매개 변수에는 variadic 인수가 0개 필요하지만 1개가 제공되었습니다.
+D:\Algorithm\b-tree\b-tree\test.c(107,32): warning C4474: 'printf' : 서식 문자열에 전달된 인수가 너무 많습니다.
+D:\Algorithm\b-tree\b-tree\test.c(107,32): message : 자리 표시자 및 해당 매개 변수에는 variadic 인수가 0개 필요하지만 1개가 제공되었습니다.
+D:\Algorithm\b-tree\b-tree\test.c(124,78): warning C4474: 'printf' : 서식 문자열에 전달된 인수가 너무 많습니다.
+D:\Algorithm\b-tree\b-tree\test.c(124,78): message : 자리 표시자 및 해당 매개 변수에는 variadic 인수가 0개 필요하지만 1개가 제공되었습니다.
+D:\Algorithm\b-tree\b-tree\test.c(59,7): warning C4101: 'input' :참조되지 않은 지역 변수입니다.
+D:\Algorithm\b-tree\b-tree\test.c(63,15): warning C4101: 'find' :참조되지 않은 지역 변수입니다.
+D:\Algorithm\b-tree\b-tree\test.c(62,6): warning C4101: 'num' :참조되지 않은 지역 변수입니다.
+D:\Algorithm\b-tree\b-tree\test.c(377,14): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Algorithm\b-tree\b-tree\test.c(383,16): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Algorithm\b-tree\b-tree\test.c(402,14): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Algorithm\b-tree\b-tree\test.c(408,16): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Algorithm\b-tree\b-tree\test.c(361,9): warning C4101: 'score' :참조되지 않은 지역 변수입니다.
+D:\Algorithm\b-tree\b-tree\test.c(358,7): warning C4101: 'name_i' :참조되지 않은 지역 변수입니다.
+D:\Algorithm\b-tree\b-tree\test.c(360,6): warning C4101: 'num' :참조되지 않은 지역 변수입니다.
+D:\Algorithm\b-tree\b-tree\test.c(462,13): warning C4098: 'print_level': 'void' 함수에서 값을 반환하고 있습니다.
+D:\Algorithm\b-tree\b-tree\test.c(476,10): warning C4098: 'print_level': 'void' 함수에서 값을 반환하고 있습니다.
+D:\Algorithm\b-tree\b-tree\test.c(562,12): warning C4101: 'k' :참조되지 않은 지역 변수입니다.
+D:\Algorithm\b-tree\b-tree\test.c(718): warning C4715: 'B_tree_deletion': 모든 제어 경로에서 값을 반환하지는 않습니다.
   b-tree.vcxproj -> D:\Algorithm\b-tree\x64\Debug\b-tree.exe
