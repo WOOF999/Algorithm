@@ -3,11 +3,11 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define MAXD_idx 2
-#define MAXD_data 2
+#define MAXD_idx 4
+#define MAXD_data 4
 #define D_idx 2	// 이것이 인덱스 노드의  capacity order  이다.
 #define D_data 2   //   "    데이타 노드의    "       "
-#define MAX 100
+#define MAX 10000
 
 typedef char type_key[100];
 
@@ -169,14 +169,21 @@ type_ptr_datanode get_datanode(char* name)
 			break; // 자식으로 내려 가기 위함
 	}
 	curr_d = curr->ptrd[i];
+
+
 	for (i = 0; i < curr_d->fill_cnt; i++) {   // datanode에서 in_key를 탐색 
-		if (strcmp(in_key, curr_d->rec[i].name) == 0) {
-			printf("found data node");
+		if (strcmp(in_key, curr_d->rec[i].name) < 0) {
+			printf("범위 탐색 할 키 값이 존재하지 않습니다.\n");
+			break;
+		}
+		else if (strcmp(in_key, curr_d->rec[i].name) == 0) {
+			//printf("found data node");
 			return curr_d;
 		}
-		
+		else;
+
 	}
-	printf("data not found");
+
 
 } // get_datanode
 
@@ -184,6 +191,8 @@ int range_search(char* key1, char* key2)
 {
 	int i, j, count = 0;
 	FILE* fp;
+
+	top = -1;
 
 	type_ptr_datanode ptr1, ptr2, tptr;
 	if (strcmp(key1, key2) > 0) {
@@ -200,7 +209,7 @@ int range_search(char* key1, char* key2)
 	if (ptr1 == ptr2) { // start key 와 end key 가 동일 데이타노드에 속한다.
 		// 스캔하면서 start key 나 그 바로 다음에서 멈춘다.
 		for (i = 0; i < ptr1->fill_cnt; i++) {
-			if (strcmp(key1, ptr1->rec[i].name)<= /* Fill your code */ 0)
+			if (strcmp(key1, ptr1->rec[i].name) <= /* Fill your code */ 0)
 				break;
 		}
 
@@ -239,7 +248,7 @@ int range_search(char* key1, char* key2)
 	}
 
 	// ptr2 노드의 내용을 처리할 차례이다. key2 이전(key2 포함)의 레코드들을 출력한다.
-	for (i = 0; i <tptr /* Fill your code */->fill_cnt && strcmp(ptr2->rec[i].name, key2/* Fill your code */) <= 0; i++) {
+	for (i = 0; i < tptr /* Fill your code */->fill_cnt && strcmp(ptr2->rec[i].name, key2/* Fill your code */) <= 0; i++) {
 		fprintf(fp, "%s %d\n", ptr2->rec[i].name, ptr2->rec[i].leng);
 		fflush(fp);
 		count++;
@@ -381,7 +390,11 @@ int insert_arec_b_plus_tree(type_rec in_rec) {	//하나의 레코드를 삽입.
 			// index of center record is at D_data. center 및 그 좌측은 노드 HEAD 로 옮긴다.
 			for (i = 0; i <= D_data; i++)
 				HEAD->rec[i] = bnode_data.rec[i];
-			HEAD->fill_cnt = D_data ;//***
+			HEAD->fill_cnt = D_data + 1;
+			
+			/*
+			strcpy(HEAD->rec[3].name, "");
+			HEAD->rec[3].leng = 0;*/
 			new_ptrd = (type_ptr_datanode)malloc(sizeof(type_data_node));
 
 			// 나머지 뒤는 새로운 노드에 넣음.
@@ -390,9 +403,11 @@ int insert_arec_b_plus_tree(type_rec in_rec) {	//하나의 레코드를 삽입.
 			your
 			code
 			*/
-			new_ptrd->rec[0] = bnode_data.rec[2];
+			new_ptrd->rec[0] = bnode_data.rec[3];
+			new_ptrd->rec[1] = bnode_data.rec[4];
+			new_ptrd->fill_cnt = 2;
 
-			strcpy(ROOT->key[0], HEAD->rec[D_data-1].name); // 앞 데이타노드의 맨 뒤 레코드의 키를 부모에 넣음
+			strcpy(ROOT->key[0], HEAD->rec[D_data].name); // 앞 데이타노드의 맨 뒤 레코드의 키를 부모에 넣음
 			ROOT->ptrd[1] = new_ptrd;	// 이 작업으로 지금부터 정상적인 B+  트리가 됨.
 
 			HEAD->link = new_ptrd/* Fill your code */;	// 연결리스트에 새 노드를 연결함.
@@ -430,6 +445,8 @@ int insert_arec_b_plus_tree(type_rec in_rec) {	//하나의 레코드를 삽입.
 	curr_d = curr->ptrd[i]/* Fill your code */; // 데이타노드로 내려 감. curr_d 은 데이타노들 가리킴.
 	down_idx = i;	// 부모에서 자식으로 내려간 인덱스 저장. 나중에 이용할 것임.
 
+
+
 	// 이 데이타노드(curr_d)에 in_rec 레코드를 넣어야 함.
 
 	fc = curr_d->fill_cnt;
@@ -458,12 +475,17 @@ int insert_arec_b_plus_tree(type_rec in_rec) {	//하나의 레코드를 삽입.
 		curr_d->rec[i] = in_rec; // 새 레코드를 넣음.
 		curr_d->fill_cnt++;
 
+
 		if (down_idx < parent->fill_cnt)	// 마지막 포인터로 내려 온 경우는 부모에 반영하지 않음.
 			strcpy(parent->key[down_idx]/* Fill your code */, curr_d->rec[fc].name);// 데이타노드의 마지막 레코드의 키를 부모에게 넣어줌. 여기 중요!!
 		return 1; // 성공으로 종료.
 	}
 	else
 	{ 	// 첫 데이타노드가 full 임. split 가 필요함. big data node 를 준비함
+
+
+
+
 		for (i = 0; i < MAXD_data; i++) {
 			if (strcmp(in_key, curr_d->rec[i].name) < 0) break;
 			else if (strcmp(in_key, curr_d->rec[i].name) == 0)
@@ -486,9 +508,16 @@ int insert_arec_b_plus_tree(type_rec in_rec) {	//하나의 레코드를 삽입.
 		for (i = 0; i <= D_data; i++) curr_d->rec[i] = bnode_data.rec[i];
 		curr_d->fill_cnt = D_data + 1;
 
+		
+		//***
+		strcpy(curr_d->rec[3].name,"");
+		curr_d->rec[3].leng = 0;
+	
+	
+
 		new_ptrd = (type_ptr_datanode)malloc(sizeof(type_data_node));
 		for (i = 0; i < D_data; i++)	// 나머지 뒤는 새로운 노드에 넣음.
-			new_ptrd->rec[i] = bnode_data.rec[i/* Fill your code */ +D_data];
+			new_ptrd->rec[i] = bnode_data.rec[/* Fill your code */i + 1 + D_data];
 		new_ptrd->fill_cnt = D_data;
 		new_ptrd->link = NULL;
 
@@ -524,7 +553,7 @@ int insert_arec_b_plus_tree(type_rec in_rec) {	//하나의 레코드를 삽입.
 
 			strcpy(curr->key[i], in_key);	// 키 삽입 
 			if (curr->ptri[0] == NULL) {	// curr 는 리프노드이므로 type-1 삽입이다.
-				curr->ptrd[i + 1] =child_d/* Fill your code */;	// 자식 포인터를 ptrd 에 삽입 
+				curr->ptrd[i + 1] = child_d/* Fill your code */;	// 자식 포인터를 ptrd 에 삽입 
 				curr->ptri[i + 1] = NULL;
 			}
 			else { // curr 는 리프노드가 아니다. 고로 type-2 삽입이다. 자식 포인터를 ptri 에 넣는다.
@@ -533,8 +562,8 @@ int insert_arec_b_plus_tree(type_rec in_rec) {	//하나의 레코드를 삽입.
 				your
 				code
 				*/
-				curr->ptri[i+1] = child_d;
-
+				curr->ptri[i + 1] = child;
+				curr->ptrd[i + 1] = NULL;
 			}
 
 			curr->fill_cnt++;         // fill 카운트 증가시킴 
@@ -577,31 +606,41 @@ int insert_arec_b_plus_tree(type_rec in_rec) {	//하나의 레코드를 삽입.
 				j++;		//i와 j를 증가 시킨다. 
 				i++;
 			}
-
 			// 빅노드를 반으로 나누어 전반부를 curr 에 넣는다.
-			for (i = 0; i < D_data/* Fill your code */; i++) {
+			for (i = 0; i < D_idx/* Fill your code */; i++) {
 				curr->ptri[i] = bnode_index.ptri[i];    //빅노드의 앞의 반을 현재 노드에 넣어준다. [레코드, 포인터]
 				curr->ptrd[i] = bnode_index.ptrd[i];
 				strcpy(curr->key[i], bnode_index.key[i]);
 			}
 
 			curr->ptri[i] = bnode_index.ptri[i];		//bnode.ptr[i]는 curr.ptr[i]를 가르킨다. 
-			curr->ptrd[i] = child_d/* Fill your code */;
+			curr->ptrd[i] = bnode_index.ptrd[i]/* Fill your code */;
 			curr->fill_cnt = D_idx;
+
+			//***
+			curr->ptri[3] = NULL;
+			curr->ptrd[3] = NULL;
+			strcpy(curr->key[2], "");
+
+			curr->ptri[4] = NULL;
+			curr->ptrd[4] = NULL;
+			strcpy(curr->key[3], "");
+			
 
 			new_ptri = (type_ptr_idxnode)malloc(sizeof(type_idx_node)); // 빅노드의 후반부를 새로운 노드에 넣는다. 
 
-			for (i = 0; i <D_idx/* Fill your code */; i++) {	//뒤의 반을 새노드에 저장 
+			for (i = 0; i < D_idx/* Fill your code */; i++) {	//뒤의 반을 새노드에 저장 
 				new_ptri->ptri[i] = bnode_index.ptri[i + 1 + D_idx];
 				new_ptri->ptrd[i] = bnode_index.ptrd[i + 1 + D_idx];
 				strcpy(new_ptri->key[i], bnode_index.key[i + 1 + D_idx]);
 			}
-			new_ptri->ptri[i] = bnode_index.ptri[i+D_idx/* Fill your code */];	// 맨 마지막 포인터를 옮긴다.
-			new_ptri->ptrd[i] = bnode_index.ptrd[i+D_data/* Fill your code */];
+			new_ptri->ptri[i] = bnode_index.ptri[MAXD_idx + 1/* Fill your code */];	// 맨 마지막 포인터를 옮긴다.
+			new_ptri->ptrd[i] = bnode_index.ptrd[MAXD_idx + 1/* Fill your code */];
 			new_ptri->fill_cnt = D_idx;
 
 			strcpy(in_key, bnode_index.key[D_idx]);	// 빅노드의 중간 키를 elevation 할 키로 함
 			child = new_ptri;					// 새로 할당한 노드의 포인터를 elevation 할 포인터로 함.
+
 
 			if (top >= 0) {	// curr의 부모가 있음.  
 				curr = pop();	//  curr 의 부모를 스택에서 가져 와서 그것으로 curr 를 변경.
@@ -612,6 +651,8 @@ int insert_arec_b_plus_tree(type_rec in_rec) {	//하나의 레코드를 삽입.
 				strcpy(tptr->key[0], in_key);
 				tptr->ptri[0] = curr;
 				tptr->ptri[1] = child;
+				tptr->fill_cnt = 1;
+				tptr->ptrd[1] = NULL;
 				/*
 				Fill
 				your
@@ -681,10 +722,15 @@ type_ptr_idxnode pop() {
 }
 
 void sequential_print(type_ptr_datanode HEAD) {
-	int index = 0;
-	while (HEAD->link) {
-		printf("%s\n%s\n", HEAD->rec[0],HEAD->rec[1]);
-		HEAD = HEAD->link;
+	type_ptr_datanode tmp;
+	tmp = HEAD;
+	while (tmp->link!=NULL) {
+		for (int index = 0; index < tmp->fill_cnt; index++) {
+			if(strcmp(tmp->rec[index].name,"")!=0)
+			printf("%s\n", tmp->rec[index].name);
+		}
+		tmp = tmp->link;
+		
 
 	}
 

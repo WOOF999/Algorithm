@@ -21,6 +21,9 @@
     <ClCompile Include="B_plus_tree.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Bplus.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Com_names1.txt">
