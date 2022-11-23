@@ -17,6 +17,10 @@ int LAST = Tbl_size - 1; // 가장 높은 빈자리로 초기화.
 float average_num_probe;
 FILE* fp;
 
+int del_middle(int s, int p, int* chain_split);
+int insert_rec(type_record rec);
+int delete_rec(char* dkey, int* chain_split);
+
 int hash(char recname[]) {
 	unsigned char u; int HA, j, leng, halfleng;
 	long sum = 0;
@@ -110,8 +114,8 @@ int retrieve_rec(char* key, int* probe) {
 			return curr;
 		}
 		else
-			curr = Hashtable[curr].link;
-			/* Fill your code */;
+			curr = Hashtable[curr].link;/* Fill your code */
+			
 	} while (curr != -1);
 	// 여기에 오면 찾기를 실패한 것임.
 	return -1;
@@ -136,7 +140,7 @@ float compute_average_number_of_probes_per_search() {
 			total_probes += nprobe/* Fill your code */;
 		}
 	}
-	average_probe = total_probes/n_search_done/* Fill your code */;
+	average_probe = (double)total_probes/(double)n_search_done/* Fill your code */;
 	fclose(fp);
 	return average_probe;
 } // end of compute_average_number_of_probes_for_search
@@ -171,7 +175,7 @@ int del_start(int s, int* chain_split)
 		strcpy(Hashtable[s].name, Hashtable[found].name);
 		Hashtable[s].monincome = Hashtable[found].monincome;
 		// found 의 레코드를 지우는 새로운 문제가 생긴다. 아래 1 은 위의 한번 이동을 반영함.
-		nmove = 1 + nmove/* Fill your code */;/***/
+		nmove = 1 + del_middle(found,prev_found,chain_split)/* Fill your code */;/***/
 		return nmove;
 	}
 } // end of del_starat.
@@ -224,25 +228,25 @@ int del_middle(int s, int p, int* chain_split)
 			} while (element_of_D_s != -1);  // -1 을 curr로 변경해도 좋으며 시간이 덜 걸린다.
 			// 
 			if (HA_curr_belongs_to_D_s == 0) {  // D(s) 에 속하지 않는 HA 를 가진 원소 발견!
-				found = /* Fill your code */;
-				prev_found =/* Fill your code */;
+				found = curr/* Fill your code */;
+				prev_found =prev/* Fill your code */;
 			}
 
 			prev = curr;
-			curr = /* Fill your code */;
+			curr = Hashtable[curr].link/* Fill your code */;
 		}
 		// found 에 찾은 결과가 있다.
 		if (found != -1) { // D(s)에 HA가 속하지 않는 원소가 존재함. 
 			strcpy(Hashtable[s].name, Hashtable[found].name);
 			Hashtable[s].monincome = Hashtable[found].monincome;
-			nmove = 1 + del_middle(/* Fill your code */, /* Fill your code */, chain_split);
+			nmove = 1 + del_middle(curr/* Fill your code */,prev /* Fill your code */, chain_split);
 			return nmove;
 		}
 		else { // s 다음 부터의 모든 원소는 home address 가 D(s)에 속함.
 			// s 의 선행자에서 체인을 분리해도 된다.
-			/* Fill your code */ = -1; // 체인 분리.
+			/* Fill your code */Hashtable[prev].link = -1; // 체인 분리.
 			*chain_split += 1; // 체인 분리 횟수 증가.
-			nmove = /* Fill your code */;  // s에 있는 레코드 삭제. s 는 체인의 시작.
+			nmove = del_start(curr,chain_split)/* Fill your code */;  // s에 있는 레코드 삭제. s 는 체인의 시작.
 			return nmove;
 		}
 	}
@@ -252,6 +256,7 @@ int del_middle(int s, int p, int* chain_split)
 // parameter chain_split: used for relecting chain splits
 int delete_rec(char* dkey, int* chain_split) {
 	int found = -1, h, curr, prev, nmove = 0;
+	*chain_split = 0;
 
 	h = hash(dkey);
 	if (Hashtable[h].name[0] == '\0')
@@ -261,7 +266,7 @@ int delete_rec(char* dkey, int* chain_split) {
 	}
 
 	if (strcmp(dkey, Hashtable[h].name) == 0)  // dkey is at its home address.
-		nmove = /* Fill your code */;
+		nmove = del_start(h,chain_split)/* Fill your code */;
 	else {
 		// search the record whose key is equal to dkey from the next of address h.
 		curr = Hashtable[h].link;
@@ -273,8 +278,8 @@ int delete_rec(char* dkey, int* chain_split) {
 				break;
 			}
 			else {
-				prev = /* Fill your code */;
-				curr = /* Fill your code */;
+				prev = curr/* Fill your code */;
+				curr = Hashtable[curr].link/* Fill your code */;
 			}
 		} //while.
 
@@ -284,7 +289,7 @@ int delete_rec(char* dkey, int* chain_split) {
 			return -1;
 		}
 		else
-			nmove = /* Fill your code */;
+			nmove = del_middle(found,prev,chain_split)/* Fill your code */;
 	}//else.
 
 	return nmove;
@@ -292,7 +297,11 @@ int delete_rec(char* dkey, int* chain_split) {
 
 void delete_multiple(int num_del_req) {
 	char line[300], * res;
-	int cnt_lines = 0, num_split = 0, nmove, leng, num_deletion_success = 0, num_relocated_deletions = 0;
+	/***/
+	int cnt_lines = 0,  nmove, leng, num_deletion_success = 0, num_relocated_deletions = 0;
+	int* num_split_p;
+	int num_split = 0;
+	num_split_p = &num_split;
 
 	fp = fopen("Companies_Korean.txt", "r");
 	while (1)
@@ -303,7 +312,7 @@ void delete_multiple(int num_del_req) {
 		cnt_lines += 1;
 		leng = strlen(line);
 		line[leng - 1] = '\0';  // 마지막 newline 글자를 지운다.
-		nmove = /* Fill your code */;
+		nmove = delete_rec(line,num_split_p)/* Fill your code */;
 		if (nmove >= 0)
 			num_deletion_success += 1;
 		if (nmove > 0)
@@ -316,7 +325,32 @@ void delete_multiple(int num_del_req) {
 	return;
 }
 
+int check_num_links(char key[]) {
+	int count = 0, curr, flag = -1;
+	int HA = hash(key);
+	if (Hashtable[HA].name[0] == '\0') {
+		printf("There are no records with such key.\n");
+		return -1;
+	}
 
+	curr = HA;
+
+	// move the curr, and fine the key. if the key doesn't exist in hashtable but has hash links,
+	// we have to use flag.
+	while (curr != -1) {
+		if (strcmp(Hashtable[curr].name,key/* Fill your code */) == 0) {
+			flag = 1;
+			break/* Fill your code */;
+		}
+		count += 1;
+		curr = Hashtable[curr].link/* Fill your code */;
+	}
+	if (flag != 1) {
+		printf("There are no records with such key.\n");
+		return -1;
+	}
+	return count/* Fill your code */;
+}
 
 int main(void)
 {
@@ -403,9 +437,9 @@ int main(void)
 			break;
 		case 'd':  // deletion command:  d 학진상회
 			n_chain_split = 0;
-			//n_move = delete_rec(name, &n_chain_split);
-			//if (n_move >= 0)
-				//printf("Deletion succeeded. num. relocations=%d, num chain splits=%d\n", n_move, n_chain_split);
+			n_move = delete_rec(name, &n_chain_split);
+			if (n_move >= 0)
+				printf("Deletion succeeded. num. relocations=%d, num chain splits=%d\n", n_move, n_chain_split);
 			break;
 		case 'q':  // multiple deletion command:  q  20000   (deletion of the first 20,000 names in the data file).
 			for (k = 0; k < i; k++) { // check if name is a number string.
@@ -414,14 +448,14 @@ int main(void)
 				}
 			}
 			num_deletions_to_do = atoi(name);
-			//delete_multiple(num_deletions_to_do);
+			delete_multiple(num_deletions_to_do);
 			break;
 
 		case 'c':  // check the number of links related to the input
-			//count = check_num_links(name);
-			//if (count != -1) {
-				//printf("number of links : %d\n", count);
-			//}
+			count = check_num_links(name);
+			if (count != -1) {
+				printf("number of links : %d\n", count);
+			}
 			break;
 
 		default:

@@ -1,8 +1,7 @@
 ﻿  test.cpp
-D:\Algorithm\HashingWithChain\HashingWithChain\test.cpp(25,24): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\Algorithm\HashingWithChain\HashingWithChain\test.cpp(131,22): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\Algorithm\HashingWithChain\HashingWithChain\test.cpp(141,9): warning C4244: 'return': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\Algorithm\HashingWithChain\HashingWithChain\test.cpp(166,22): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\Algorithm\HashingWithChain\HashingWithChain\test.cpp(150,6): warning C4101: 'count' :참조되지 않은 지역 변수입니다.
-D:\Algorithm\HashingWithChain\HashingWithChain\test.cpp(149,91): warning C4101: 'n_move' :참조되지 않은 지역 변수입니다.
+D:\Algorithm\HashingWithChain\HashingWithChain\test.cpp(29,24): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Algorithm\HashingWithChain\HashingWithChain\test.cpp(135,22): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Algorithm\HashingWithChain\HashingWithChain\test.cpp(143,38): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Algorithm\HashingWithChain\HashingWithChain\test.cpp(313,22): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Algorithm\HashingWithChain\HashingWithChain\test.cpp(375,22): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   HashingWithChain.vcxproj -> D:\Algorithm\HashingWithChain\x64\Debug\HashingWithChain.exe

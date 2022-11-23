@@ -18,7 +18,7 @@
     <ClCompile Include="hashing_chain.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
+    <ClCompile Include="HW3_2021245044_서은하.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
